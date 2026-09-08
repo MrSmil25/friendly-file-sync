@@ -19,9 +19,8 @@ export const Route = createFileRoute("/register")({
       },
     ],
   }),
-  validateSearch: (search: Record<string, unknown>) => ({
-    code: typeof search['code'] === "string" ? (search['code'] as string) : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { code?: string } =>
+    typeof search['code'] === "string" ? { code: search['code'] as string } : {},
   component: RegisterPage,
 });
 

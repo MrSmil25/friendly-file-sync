@@ -99,14 +99,20 @@ function InvitationsPage() {
       .from("invitations")
       .update({ is_active: false })
       .eq("id", inv.id);
-    if (error) return toast.error("Gagal menonaktifkan: " + error.message);
+    if (error) {
+      toast.error("Gagal menonaktifkan: " + error.message);
+      return;
+    }
     await queryClient.invalidateQueries({ queryKey: ["invitations"] });
     toast.success("Undangan dinonaktifkan");
   }
 
   async function remove(inv: Invitation) {
     const { error } = await supabase.from("invitations").delete().eq("id", inv.id);
-    if (error) return toast.error("Gagal menghapus: " + error.message);
+    if (error) {
+      toast.error("Gagal menghapus: " + error.message);
+      return;
+    }
     await queryClient.invalidateQueries({ queryKey: ["invitations"] });
     toast.success("Undangan dihapus");
   }
@@ -335,7 +341,10 @@ function DivisionCodeDialog({
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!division) return toast.error("Divisi wajib dipilih");
+    if (!division) {
+      toast.error("Divisi wajib dipilih");
+      return;
+    }
     const finalCode = (code || generateDivisionCode(division)).trim().toUpperCase();
     setSaving(true);
     const { error } = await supabase.from("invitations").insert({
@@ -465,7 +474,10 @@ function PersonalLinkDialog({
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!division) return toast.error("Divisi wajib dipilih");
+    if (!division) {
+      toast.error("Divisi wajib dipilih");
+      return;
+    }
     const token = generatePersonalToken();
     setSaving(true);
     const { error } = await supabase.from("invitations").insert({
@@ -480,7 +492,10 @@ function PersonalLinkDialog({
       created_by: userId,
     });
     setSaving(false);
-    if (error) return toast.error("Gagal membuat link: " + error.message);
+    if (error) {
+      toast.error("Gagal membuat link: " + error.message);
+      return;
+    }
     await queryClient.invalidateQueries({ queryKey: ["invitations"] });
     try {
       await copyText(registerLink(token));
