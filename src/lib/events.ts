@@ -444,3 +444,9 @@ export function formatDayID(value?: string | null) {
   if (Number.isNaN(d.getTime())) return "";
   return `${d.getDate()} ${MONTHS_ID[d.getMonth()]} ${d.getFullYear()}`;
 }
+
+/** Label dropdown event: "Nama - 12 Sep 2026". */
+export function eventOptionLabel(e: { name: string; date_start?: string | null; date_end?: string | null }) {
+  const d = formatEventDate(e.date_start, e.date_end);
+  return d === "-" ? e.name : `${e.name} - ${d}`;
+}

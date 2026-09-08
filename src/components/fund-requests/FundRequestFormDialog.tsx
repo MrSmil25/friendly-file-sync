@@ -1,3 +1,4 @@
+import { eventOptionLabel } from "@/lib/events";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -135,7 +136,7 @@ export function FundRequestFormDialog({ open, onOpenChange, onSubmit, saving }: 
                 <SelectItem value={NONE}>Tidak terkait event</SelectItem>
                 {(events ?? []).map((e) => (
                   <SelectItem key={e.id} value={e.id}>
-                    {e.name}
+                    {eventOptionLabel(e)}
                   </SelectItem>
                 ))}
               </SelectContent>

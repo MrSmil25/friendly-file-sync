@@ -1,3 +1,4 @@
+import { eventOptionLabel } from "@/lib/events";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -152,7 +153,7 @@ export function BudgetFormDialog({
                   <SelectItem value="__none">Belum dipilih</SelectItem>
                   {(events ?? []).map((e) => (
                     <SelectItem key={e.id} value={e.id}>
-                      {e.name}
+                      {eventOptionLabel(e)}
                     </SelectItem>
                   ))}
                 </SelectContent>

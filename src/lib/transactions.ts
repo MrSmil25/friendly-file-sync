@@ -132,7 +132,7 @@ export async function fetchDealOptions() {
 export async function fetchEventOptions() {
   const { data, error } = await supabase
     .from("events")
-    .select("id,name")
+    .select("id,name,date_start,date_end")
     .order("date_start", { ascending: false });
   if (error) throw error;
   return data ?? [];

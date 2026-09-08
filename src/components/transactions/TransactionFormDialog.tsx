@@ -1,3 +1,4 @@
+import { eventOptionLabel } from "@/lib/events";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -256,7 +257,7 @@ export function TransactionFormDialog({
               <Select value={linkId} onValueChange={setLinkId}>
                 <SelectTrigger><SelectValue placeholder="Pilih event" /></SelectTrigger>
                 <SelectContent>
-                  {events.map((ev) => (<SelectItem key={ev.id} value={ev.id}>{ev.name}</SelectItem>))}
+                  {events.map((ev) => (<SelectItem key={ev.id} value={ev.id}>{eventOptionLabel(ev)}</SelectItem>))}
                 </SelectContent>
               </Select>
             )}
