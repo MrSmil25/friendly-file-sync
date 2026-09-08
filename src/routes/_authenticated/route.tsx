@@ -39,6 +39,7 @@ import { fetchOrgSettings, resolveLogoUrl } from "@/lib/announcements";
 import { UserAvatar } from "@/components/UserAvatar";
 import { ProfileCompletionGate } from "@/components/ProfileCompletionGate";
 import { Button } from "@/components/ui/button";
+import { NotificationBell } from "@/components/notifications/NotificationBell";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -264,6 +265,7 @@ function AppLayout() {
             <Menu className="size-5" />
           </button>
           <div className="flex flex-1 items-center justify-end gap-3">
+            <NotificationBell />
             <div className="hidden text-right sm:block">
               <p className="text-sm font-medium">{profile?.full_name ?? "Pengguna"}</p>
               <p className="text-xs text-muted-foreground">{profile?.role ?? "Anggota"}</p>

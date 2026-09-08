@@ -28,6 +28,7 @@ import { Route as AuthenticatedMemberProgressRouteImport } from './routes/_authe
 import { Route as AuthenticatedMembersRouteImport } from './routes/_authenticated/members'
 import { Route as AuthenticatedMentorTasksRouteImport } from './routes/_authenticated/mentor-tasks'
 import { Route as AuthenticatedMousRouteImport } from './routes/_authenticated/mous'
+import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedPipelineRouteImport } from './routes/_authenticated/pipeline'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedTransactionsRouteImport } from './routes/_authenticated/transactions'
@@ -147,6 +148,12 @@ const AuthenticatedMousRoute = AuthenticatedMousRouteImport.update({
   path: '/mous',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedNotificationsRoute =
+  AuthenticatedNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPipelineRoute = AuthenticatedPipelineRouteImport.update({
   id: '/pipeline',
   path: '/pipeline',
@@ -269,6 +276,7 @@ export interface FileRoutesByFullPath {
   '/members': typeof AuthenticatedMembersRoute
   '/mentor-tasks': typeof AuthenticatedMentorTasksRoute
   '/mous': typeof AuthenticatedMousRoute
+  '/notifications': typeof AuthenticatedNotificationsRoute
   '/pipeline': typeof AuthenticatedPipelineRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/transactions': typeof AuthenticatedTransactionsRoute
@@ -307,6 +315,7 @@ export interface FileRoutesByTo {
   '/members': typeof AuthenticatedMembersRoute
   '/mentor-tasks': typeof AuthenticatedMentorTasksRoute
   '/mous': typeof AuthenticatedMousRoute
+  '/notifications': typeof AuthenticatedNotificationsRoute
   '/pipeline': typeof AuthenticatedPipelineRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/transactions': typeof AuthenticatedTransactionsRoute
@@ -347,6 +356,7 @@ export interface FileRoutesById {
   '/_authenticated/members': typeof AuthenticatedMembersRoute
   '/_authenticated/mentor-tasks': typeof AuthenticatedMentorTasksRoute
   '/_authenticated/mous': typeof AuthenticatedMousRoute
+  '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/pipeline': typeof AuthenticatedPipelineRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/transactions': typeof AuthenticatedTransactionsRoute
@@ -387,6 +397,7 @@ export interface FileRouteTypes {
     | '/members'
     | '/mentor-tasks'
     | '/mous'
+    | '/notifications'
     | '/pipeline'
     | '/profile'
     | '/transactions'
@@ -425,6 +436,7 @@ export interface FileRouteTypes {
     | '/members'
     | '/mentor-tasks'
     | '/mous'
+    | '/notifications'
     | '/pipeline'
     | '/profile'
     | '/transactions'
@@ -464,6 +476,7 @@ export interface FileRouteTypes {
     | '/_authenticated/members'
     | '/_authenticated/mentor-tasks'
     | '/_authenticated/mous'
+    | '/_authenticated/notifications'
     | '/_authenticated/pipeline'
     | '/_authenticated/profile'
     | '/_authenticated/transactions'
@@ -628,6 +641,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMousRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/notifications': {
+      id: '/_authenticated/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof AuthenticatedNotificationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/pipeline': {
       id: '/_authenticated/pipeline'
       path: '/pipeline'
@@ -771,6 +791,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMembersRoute: typeof AuthenticatedMembersRoute
   AuthenticatedMentorTasksRoute: typeof AuthenticatedMentorTasksRoute
   AuthenticatedMousRoute: typeof AuthenticatedMousRoute
+  AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedPipelineRoute: typeof AuthenticatedPipelineRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedTransactionsRoute: typeof AuthenticatedTransactionsRoute
@@ -805,6 +826,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMembersRoute: AuthenticatedMembersRoute,
   AuthenticatedMentorTasksRoute: AuthenticatedMentorTasksRoute,
   AuthenticatedMousRoute: AuthenticatedMousRoute,
+  AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedPipelineRoute: AuthenticatedPipelineRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedTransactionsRoute: AuthenticatedTransactionsRoute,
