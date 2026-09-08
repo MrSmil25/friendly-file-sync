@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase-external";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { claimInvite, validateInvite, type ValidateInviteResult } from "@/lib/invitations";
 
 export const Route = createFileRoute("/register")({
   head: () => ({
@@ -18,16 +19,56 @@ export const Route = createFileRoute("/register")({
       },
     ],
   }),
+  validateSearch: (search: Record<string, unknown>): { code?: string } =>
+    typeof search['code'] === "string" ? { code: search['code'] as string } : {},
   component: RegisterPage,
 });
 
 function RegisterPage() {
   const navigate = useNavigate();
+  const { code: codeParam } = Route.useSearch();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [inviteCode, setInviteCode] = useState(codeParam ?? "");
+  const [checking, setChecking] = useState(false);
+  const [invite, setInvite] = useState<ValidateInviteResult | null>(null);
   const [loading, setLoading] = useState(false);
+  const lockedCode = !!codeParam;
+
+  useEffect(() => {
+    const code = inviteCode.trim();
+    if (!code) {
+      setInvite(null);
+      return;
+    }
+    let cancelled = false;
+    setChecking(true);
+    const timer = setTimeout(async () => {
+      try {
+        const result = await validateInvite(code);
+        if (!cancelled) setInvite(result);
+      } catch {
+        if (!cancelled)
+          setInvite({
+            valid: false,
+            message: "Kode undangan tidak dapat diperiksa",
+            division: null,
+            role: null,
+            intended_email: null,
+          });
+      } finally {
+        if (!cancelled) setChecking(false);
+      }
+    }, 400);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [inviteCode]);
+
+  const inviteInvalid = !!inviteCode.trim() && !!invite && !invite.valid;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -41,6 +82,10 @@ function RegisterPage() {
     }
     if (password !== confirm) {
       toast.error("Konfirmasi kata sandi tidak cocok");
+      return;
+    }
+    if (inviteInvalid) {
+      toast.error(invite?.message || "Kode undangan tidak valid");
       return;
     }
     setLoading(true);
@@ -58,18 +103,35 @@ function RegisterPage() {
       return;
     }
 
-    if (!data.session) {
+    let hasSession = !!data.session;
+    if (!hasSession) {
       const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-      setLoading(false);
       if (signInError) {
+        setLoading(false);
         toast.success("Akun dibuat. Silakan cek email untuk konfirmasi, lalu masuk.");
         navigate({ to: "/login", replace: true });
         return;
       }
-    } else {
-      setLoading(false);
+      hasSession = true;
     }
 
+    const code = inviteCode.trim();
+    if (code && hasSession) {
+      try {
+        const result = await claimInvite(code);
+        if (result === "OK") {
+          toast.success("Undangan diterima, divisi & role sudah diatur");
+        } else {
+          toast.warning(
+            "Kode undangan tidak dapat dipakai. Kamu masuk sebagai Anggota tanpa divisi.",
+          );
+        }
+      } catch {
+        toast.warning("Gagal memakai kode undangan. Kamu masuk sebagai Anggota tanpa divisi.");
+      }
+    }
+
+    setLoading(false);
     toast.success("Pendaftaran berhasil");
     navigate({ to: "/dashboard", replace: true });
   }
@@ -113,6 +175,34 @@ function RegisterPage() {
             />
           </div>
           <div className="space-y-2">
+            <Label htmlFor="inviteCode">Kode Undangan (opsional)</Label>
+            <Input
+              id="inviteCode"
+              value={inviteCode}
+              readOnly={lockedCode}
+              onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
+              placeholder="Misal FIN-2026-A3F"
+              className={lockedCode ? "bg-muted" : undefined}
+            />
+            {checking && <p className="text-xs text-muted-foreground">Memeriksa kode…</p>}
+            {!checking && invite?.valid && (
+              <div className="rounded-lg border border-green-600/30 bg-green-600/10 p-3 text-xs text-green-700">
+                <p className="font-medium">
+                  Kamu akan bergabung ke divisi {invite.division ?? "-"} sebagai{" "}
+                  {invite.role ?? "Anggota"}.
+                </p>
+                {invite.intended_email && (
+                  <p className="mt-1">Sebaiknya daftar dengan email {invite.intended_email}.</p>
+                )}
+              </div>
+            )}
+            {!checking && inviteInvalid && (
+              <p className="rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-xs text-destructive">
+                {invite?.message || "Kode undangan tidak valid"}
+              </p>
+            )}
+          </div>
+          <div className="space-y-2">
             <Label htmlFor="password">Kata Sandi</Label>
             <Input
               id="password"
@@ -135,10 +225,10 @@ function RegisterPage() {
             />
           </div>
           <p className="text-xs text-muted-foreground">
-            Role kamu akan otomatis menjadi <strong>Anggota</strong>. Divisi akan diisi kemudian
-            oleh Ketua atau Wakil Ketua.
+            Tanpa kode undangan, role kamu otomatis menjadi <strong>Anggota</strong> dan divisi
+            akan diisi kemudian oleh Ketua atau Wakil Ketua.
           </p>
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button type="submit" className="w-full" disabled={loading || inviteInvalid}>
             {loading ? "Memproses..." : "Daftar"}
           </Button>
           <p className="text-center text-sm text-muted-foreground">
