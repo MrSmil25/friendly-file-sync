@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase-external";
@@ -109,12 +109,19 @@ function MembersPage() {
             {profiles.length} anggota terdaftar di organisasi.
           </p>
         </div>
-        <Input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Cari nama anggota…"
-          className="sm:max-w-xs"
-        />
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          {canEdit && (
+            <Button asChild variant="outline">
+              <Link to="/invitations">Undang Anggota</Link>
+            </Button>
+          )}
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Cari nama anggota…"
+            className="sm:max-w-xs"
+          />
+        </div>
       </div>
 
       <div className="overflow-x-auto rounded-2xl border bg-card shadow-sm">

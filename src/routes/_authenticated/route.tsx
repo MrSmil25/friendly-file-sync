@@ -26,6 +26,7 @@ import {
   Receipt,
   Tags,
   Mic,
+  MailPlus,
 } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase-external";
@@ -98,6 +99,7 @@ const navSections = [
     items: [
       { to: "/profile", label: "Profil Saya", icon: User },
       { to: "/members", label: "Anggota", icon: Users },
+      { to: "/invitations", label: "Undangan", icon: MailPlus, requires: "orgAdmin" },
       { to: "/divisions", label: "Divisi", icon: Boxes },
       { to: "/meetings", label: "Rapat", icon: NotebookPen },
     ] as const,
@@ -165,6 +167,7 @@ function AppLayout() {
               </p>
               {section.items.map((item) => (
                 ("requires" in item && item.requires === "categoryAdmin" && !categoryAdmin) ? null :
+                ("requires" in item && item.requires === "orgAdmin" && !canManageOrg) ? null :
                 <Link
                   key={item.to}
                   to={item.to}

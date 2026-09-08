@@ -20,6 +20,7 @@ import { Route as AuthenticatedCommandCenterRouteImport } from './routes/_authen
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDivisionsRouteImport } from './routes/_authenticated/divisions'
 import { Route as AuthenticatedFundApprovalsRouteImport } from './routes/_authenticated/fund-approvals'
+import { Route as AuthenticatedInvitationsRouteImport } from './routes/_authenticated/invitations'
 import { Route as AuthenticatedMemberProgressRouteImport } from './routes/_authenticated/member-progress'
 import { Route as AuthenticatedMembersRouteImport } from './routes/_authenticated/members'
 import { Route as AuthenticatedMentorTasksRouteImport } from './routes/_authenticated/mentor-tasks'
@@ -98,6 +99,12 @@ const AuthenticatedFundApprovalsRoute =
   AuthenticatedFundApprovalsRouteImport.update({
     id: '/fund-approvals',
     path: '/fund-approvals',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedInvitationsRoute =
+  AuthenticatedInvitationsRouteImport.update({
+    id: '/invitations',
+    path: '/invitations',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedMemberProgressRoute =
@@ -236,6 +243,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/divisions': typeof AuthenticatedDivisionsRoute
   '/fund-approvals': typeof AuthenticatedFundApprovalsRoute
+  '/invitations': typeof AuthenticatedInvitationsRoute
   '/member-progress': typeof AuthenticatedMemberProgressRoute
   '/members': typeof AuthenticatedMembersRoute
   '/mentor-tasks': typeof AuthenticatedMentorTasksRoute
@@ -270,6 +278,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/divisions': typeof AuthenticatedDivisionsRoute
   '/fund-approvals': typeof AuthenticatedFundApprovalsRoute
+  '/invitations': typeof AuthenticatedInvitationsRoute
   '/member-progress': typeof AuthenticatedMemberProgressRoute
   '/members': typeof AuthenticatedMembersRoute
   '/mentor-tasks': typeof AuthenticatedMentorTasksRoute
@@ -306,6 +315,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/divisions': typeof AuthenticatedDivisionsRoute
   '/_authenticated/fund-approvals': typeof AuthenticatedFundApprovalsRoute
+  '/_authenticated/invitations': typeof AuthenticatedInvitationsRoute
   '/_authenticated/member-progress': typeof AuthenticatedMemberProgressRoute
   '/_authenticated/members': typeof AuthenticatedMembersRoute
   '/_authenticated/mentor-tasks': typeof AuthenticatedMentorTasksRoute
@@ -342,6 +352,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/divisions'
     | '/fund-approvals'
+    | '/invitations'
     | '/member-progress'
     | '/members'
     | '/mentor-tasks'
@@ -376,6 +387,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/divisions'
     | '/fund-approvals'
+    | '/invitations'
     | '/member-progress'
     | '/members'
     | '/mentor-tasks'
@@ -411,6 +423,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/divisions'
     | '/_authenticated/fund-approvals'
+    | '/_authenticated/invitations'
     | '/_authenticated/member-progress'
     | '/_authenticated/members'
     | '/_authenticated/mentor-tasks'
@@ -519,6 +532,13 @@ declare module '@tanstack/react-router' {
       path: '/fund-approvals'
       fullPath: '/fund-approvals'
       preLoaderRoute: typeof AuthenticatedFundApprovalsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/invitations': {
+      id: '/_authenticated/invitations'
+      path: '/invitations'
+      fullPath: '/invitations'
+      preLoaderRoute: typeof AuthenticatedInvitationsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/member-progress': {
@@ -686,6 +706,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDivisionsRoute: typeof AuthenticatedDivisionsRoute
   AuthenticatedFundApprovalsRoute: typeof AuthenticatedFundApprovalsRoute
+  AuthenticatedInvitationsRoute: typeof AuthenticatedInvitationsRoute
   AuthenticatedMemberProgressRoute: typeof AuthenticatedMemberProgressRoute
   AuthenticatedMembersRoute: typeof AuthenticatedMembersRoute
   AuthenticatedMentorTasksRoute: typeof AuthenticatedMentorTasksRoute
@@ -718,6 +739,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDivisionsRoute: AuthenticatedDivisionsRoute,
   AuthenticatedFundApprovalsRoute: AuthenticatedFundApprovalsRoute,
+  AuthenticatedInvitationsRoute: AuthenticatedInvitationsRoute,
   AuthenticatedMemberProgressRoute: AuthenticatedMemberProgressRoute,
   AuthenticatedMembersRoute: AuthenticatedMembersRoute,
   AuthenticatedMentorTasksRoute: AuthenticatedMentorTasksRoute,
