@@ -1,3 +1,4 @@
+import { eventOptionLabel } from "@/lib/events";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
