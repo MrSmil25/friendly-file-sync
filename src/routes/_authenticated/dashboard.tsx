@@ -77,6 +77,7 @@ function DashboardPage() {
   return (
     <div className="mx-auto max-w-6xl space-y-6">
       <UrgentBanners />
+      <WelcomeGuideCard />
 
       {isSupervisor(profile?.role) && <SupervisorOverview />}
 
