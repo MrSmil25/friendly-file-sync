@@ -256,7 +256,7 @@ export function TransactionFormDialog({
               <Select value={linkId} onValueChange={setLinkId}>
                 <SelectTrigger><SelectValue placeholder="Pilih event" /></SelectTrigger>
                 <SelectContent>
-                  {events.map((ev) => (<SelectItem key={ev.id} value={ev.id}>{ev.name}</SelectItem>))}
+                  {events.map((ev) => (<SelectItem key={ev.id} value={ev.id}>{eventOptionLabel(ev)}</SelectItem>))}
                 </SelectContent>
               </Select>
             )}

@@ -230,7 +230,7 @@ export function DealFormDialog({
                 <SelectContent>
                   <SelectItem value="none">Tidak ada</SelectItem>
                   {events.map((e) => (
-                    <SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>
+                    <SelectItem key={e.id} value={e.id}>{eventOptionLabel(e)}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
