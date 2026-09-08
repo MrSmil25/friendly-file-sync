@@ -8,6 +8,7 @@ import { fetchEvents, formatEventDate } from "@/lib/events";
 import { formatRupiah } from "@/lib/format";
 import { SupervisorOverview } from "@/components/assignments/SupervisorOverview";
 import { UrgentBanners } from "@/components/announcements/UrgentBanners";
+import { WelcomeGuideCard } from "@/components/WelcomeGuideCard";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
@@ -76,6 +77,7 @@ function DashboardPage() {
   return (
     <div className="mx-auto max-w-6xl space-y-6">
       <UrgentBanners />
+      <WelcomeGuideCard />
 
       {isSupervisor(profile?.role) && <SupervisorOverview />}
 

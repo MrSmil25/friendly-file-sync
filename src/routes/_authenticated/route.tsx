@@ -27,6 +27,7 @@ import {
   Tags,
   Mic,
   MailPlus,
+  BookOpen,
 } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase-external";
@@ -36,6 +37,7 @@ import { canApproveFunds } from "@/lib/fund-requests";
 import { canManageCategories } from "@/lib/transactions";
 import { fetchOrgSettings, resolveLogoUrl } from "@/lib/announcements";
 import { UserAvatar } from "@/components/UserAvatar";
+import { ProfileCompletionGate } from "@/components/ProfileCompletionGate";
 import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -103,6 +105,10 @@ const navSections = [
       { to: "/divisions", label: "Divisi", icon: Boxes },
       { to: "/meetings", label: "Rapat", icon: NotebookPen },
     ] as const,
+  },
+  {
+    label: "BANTUAN",
+    items: [{ to: "/guide", label: "Panduan", icon: BookOpen }] as const,
   },
 ] as const;
 
@@ -271,7 +277,9 @@ function AppLayout() {
         </header>
 
         <main className="flex-1 p-4 lg:p-8">
-          <Outlet />
+          <ProfileCompletionGate>
+            <Outlet />
+          </ProfileCompletionGate>
         </main>
       </div>
     </div>
