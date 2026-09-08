@@ -140,12 +140,12 @@ export async function fetchMyPendingReimbursements(userId: string): Promise<Agin
   return (data ?? []) as AgingRow[];
 }
 
-export async function fetchEventOptions(): Promise<{ id: string; name: string }[]> {
+export async function fetchEventOptions(): Promise<{ id: string; name: string; date_start?: string | null; date_end?: string | null }[]> {
   const { data } = await db
     .from("events")
-    .select("id,name")
+    .select("id,name,date_start,date_end")
     .order("date_start", { ascending: false });
-  return (data ?? []) as { id: string; name: string }[];
+  return (data ?? []) as { id: string; name: string; date_start?: string | null; date_end?: string | null }[];
 }
 
 /** Unggah bukti ke bucket documents, kembalikan path-nya. */
