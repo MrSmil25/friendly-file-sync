@@ -157,8 +157,8 @@ function MyBillsTab() {
       <div className="space-y-3">
         {bills.map((bill) => {
           const c = bill.collections;
-          const kind = KIND_META[c?.kind ?? "Kas_Rutin"] ?? KIND_META.Kas_Rutin!;
-          const st = PAYMENT_STATUS_META[bill.status] ?? PAYMENT_STATUS_META.Belum_Bayar!;
+          const kind = KIND_META[c?.kind ?? "Kas_Rutin"] ?? KIND_META['Kas_Rutin']!;
+          const st = PAYMENT_STATUS_META[bill.status] ?? PAYMENT_STATUS_META['Belum_Bayar']!;
           const due = c?.due_date ? new Date(c.due_date) : null;
           const soon = due ? due.getTime() - Date.now() < 3 * 86400000 : false;
           return (
@@ -314,7 +314,7 @@ function ProgramsTab() {
       )}
       <div className="space-y-3">
         {programs.map((p) => {
-          const kind = KIND_META[p.kind] ?? KIND_META.Kas_Rutin!;
+          const kind = KIND_META[p.kind] ?? KIND_META['Kas_Rutin']!;
           return (
             <button
               key={p.collection_id}
@@ -543,7 +543,7 @@ function ProgramDetailDialog({
 
         <ul className="divide-y rounded-xl border">
           {rows.map((r) => {
-            const st = PAYMENT_STATUS_META[r.status] ?? PAYMENT_STATUS_META.Belum_Bayar!;
+            const st = PAYMENT_STATUS_META[r.status] ?? PAYMENT_STATUS_META['Belum_Bayar']!;
             return (
               <li key={r.id} className="flex items-center justify-between gap-3 px-4 py-3 text-sm">
                 <span>{r.profiles?.full_name ?? "Anggota"}</span>
