@@ -56,6 +56,17 @@ function DashboardPage() {
   const { data: finance } = useQuery({ queryKey: ["dashboard-finance"], queryFn: fetchDashboardFinance });
   const { data: events = [] } = useQuery({ queryKey: ["events"], queryFn: fetchEvents });
 
+  const cashManager = canManageCash(profile?.role);
+  const { data: myBills = [] } = useQuery({ queryKey: ["my-bills"], queryFn: fetchMyBills });
+  const { data: pendingClaims = [] } = useQuery({
+    queryKey: ["cash-pending-claims"],
+    queryFn: fetchPendingClaims,
+    enabled: cashManager,
+  });
+  const unpaidBills = myBills.filter(
+    (b) => b.status === "Belum_Bayar" || b.status === "Ditolak",
+  ).length;
+
   const activeEvents = events.filter((e) =>
     ["Planning", "Preparation", "Live"].includes(e.status ?? ""),
   );
