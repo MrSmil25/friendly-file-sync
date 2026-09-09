@@ -75,6 +75,10 @@ const navSections = [
     ] as const,
   },
   {
+    label: "KAS",
+    items: [{ to: "/cash", label: "Kas & Iuran", icon: PiggyBank }] as const,
+  },
+  {
     label: "STRATEGI",
     items: [
       { to: "/command-center", label: "Command Center", icon: Radar },

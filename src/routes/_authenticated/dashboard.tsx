@@ -6,6 +6,7 @@ import { fetchDeals } from "@/lib/deals";
 import { fetchDashboardFinance } from "@/lib/transactions";
 import { fetchEvents, formatEventDate } from "@/lib/events";
 import { formatRupiah } from "@/lib/format";
+import { canManageCash, fetchMyBills, fetchPendingClaims } from "@/lib/cash";
 import { SupervisorOverview } from "@/components/assignments/SupervisorOverview";
 import { UrgentBanners } from "@/components/announcements/UrgentBanners";
 import { WelcomeGuideCard } from "@/components/WelcomeGuideCard";
@@ -55,6 +56,17 @@ function DashboardPage() {
   const { data: finance } = useQuery({ queryKey: ["dashboard-finance"], queryFn: fetchDashboardFinance });
   const { data: events = [] } = useQuery({ queryKey: ["events"], queryFn: fetchEvents });
 
+  const cashManager = canManageCash(profile?.role);
+  const { data: myBills = [] } = useQuery({ queryKey: ["my-bills"], queryFn: fetchMyBills });
+  const { data: pendingClaims = [] } = useQuery({
+    queryKey: ["cash-pending-claims"],
+    queryFn: fetchPendingClaims,
+    enabled: cashManager,
+  });
+  const unpaidBills = myBills.filter(
+    (b) => b.status === "Belum_Bayar" || b.status === "Ditolak",
+  ).length;
+
   const activeEvents = events.filter((e) =>
     ["Planning", "Preparation", "Live"].includes(e.status ?? ""),
   );
@@ -78,6 +90,24 @@ function DashboardPage() {
     <div className="mx-auto max-w-6xl space-y-6">
       <UrgentBanners />
       <WelcomeGuideCard />
+
+      {unpaidBills > 0 && (
+        <Link
+          to="/cash"
+          className="block rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-900 shadow-sm transition-colors hover:bg-amber-100"
+        >
+          Kamu punya {unpaidBills} tagihan kas belum dibayar. Klik untuk membayar.
+        </Link>
+      )}
+
+      {cashManager && pendingClaims.length > 0 && (
+        <Link
+          to="/cash"
+          className="block rounded-2xl border bg-card p-5 shadow-sm transition-colors hover:bg-accent/40"
+        >
+          Klaim menunggu verifikasi: <span className="font-semibold">{pendingClaims.length}</span>
+        </Link>
+      )}
 
       {isSupervisor(profile?.role) && <SupervisorOverview />}
 
