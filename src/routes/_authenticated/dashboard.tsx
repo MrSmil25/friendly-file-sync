@@ -91,6 +91,24 @@ function DashboardPage() {
       <UrgentBanners />
       <WelcomeGuideCard />
 
+      {unpaidBills > 0 && (
+        <Link
+          to="/cash"
+          className="block rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-900 shadow-sm transition-colors hover:bg-amber-100"
+        >
+          Kamu punya {unpaidBills} tagihan kas belum dibayar. Klik untuk membayar.
+        </Link>
+      )}
+
+      {cashManager && pendingClaims.length > 0 && (
+        <Link
+          to="/cash"
+          className="block rounded-2xl border bg-card p-5 shadow-sm transition-colors hover:bg-accent/40"
+        >
+          Klaim menunggu verifikasi: <span className="font-semibold">{pendingClaims.length}</span>
+        </Link>
+      )}
+
       {isSupervisor(profile?.role) && <SupervisorOverview />}
 
       <section className="rounded-2xl bg-primary p-6 text-primary-foreground shadow-sm sm:p-8">
